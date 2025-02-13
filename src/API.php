@@ -47,7 +47,7 @@ class API
             } catch (\Exception $e) {
             }
             if (!isset(self::$ENV['base_url'])) {
-                self::$ENV['base_url'] = 'https://api.revenuecat.com/v1/';
+                self::$ENV['base_url'] = 'https://api.revenuecat.com';
             }
         }
         return self::$ENV;
@@ -63,7 +63,7 @@ class API
         } else if (is_string($data)) {
             $env = self::getEnvironment();
             foreach ($env as $key => $value) {
-                $data = str_replace('{{' . $key . '}}', $value, $data);
+                $data = str_replace('{' . $key . '}', $value, $data);
             }
             return $data;
         }
@@ -93,9 +93,11 @@ class API
         return new Client($options);
     }
 
-    public static function userProfile()
+
+
+    public static function getSubscriptions($customer_id)
     {
-        $response = self::client(true)->get('/v1/identity/openidconnect/userinfo?schema=openid');
+        $response = self::client(true)->get(self::replacer('/v2/projects/{project_id}/customers/' . $customer_id . '/subscriptions'));
         $code = $response->getStatusCode(); // 200
         $reason = $response->getReasonPhrase(); // OK
 
@@ -103,6 +105,9 @@ class API
             throw new \Exception($reason);
         }
         $result = json_decode($response->getBody()->getContents(), true);
-        return $result;
+        if (!isset($result['items'])) {
+            throw new \Exception('No items found');
+        }
+        return $result['items'];
     }
 }
