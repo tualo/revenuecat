@@ -18,15 +18,17 @@ class Middleware implements IMiddleware
                     $db = App::get('session')->getDB();
 
 
-                    $data = $db->direct('select * from revenuecat_subscriptions where customer_id = {revenuecat_user_id} and current_timestamp() between current_period_starts_at and current_period_ends_at', [
+                    $data = $db->direct('select * from revenuecat_subscriptions where customer_id = {revenuecat_user_id} and UNIX_TIMESTAMP()*1000 between current_period_starts_at and current_period_ends_at', [
                         'revenuecat_user_id' => $session->getHeader('revenuecat_user_id')
                     ]);
                     if (count($data) == 0) {
                         $data = API::getSubscriptions($session->getHeader('revenuecat_user_id'));
                         foreach ($data as $d) {
 
+                            /*
                             $d['current_period_ends_at'] = $d['current_period_ends_at'] / 1000;
                             $d['current_period_starts_at'] = $d['current_period_starts_at'] / 1000;
+                            */
                             $db->direct('insert into revenuecat_subscriptions (
                                 id,
                                 customer_id,
