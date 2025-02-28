@@ -3,11 +3,12 @@ create table revenuecat_environment(
     val longtext not null
 );
 create table revenuecat_subscriptions(
-    id varchar(40) not null primary key,
+    id varchar(40) not null ,
     customer_id varchar(50) not null,
     current_period_ends_at timestamp not null,
     current_period_starts_at timestamp not null,
     product_id varchar(40) not null,
+primary key (id),
     key idx_revenuecat_subscriptions_customer_id (customer_id),
     key idx_revenuecat_subscriptions_time (current_period_starts_at, current_period_ends_at)
 );

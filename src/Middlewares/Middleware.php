@@ -29,19 +29,23 @@ class Middleware implements IMiddleware
                             $d['current_period_ends_at'] = $d['current_period_ends_at'] / 1000;
                             $d['current_period_starts_at'] = $d['current_period_starts_at'] / 1000;
                             */
-                            $db->direct('insert into revenuecat_subscriptions (
-                                id,
-                                customer_id,
-                                current_period_ends_at,
-                                current_period_starts_at,
-                                product_id
-                            ) values (
-                                {id},
-                                {customer_id},
-                                {current_period_ends_at},
-                                {current_period_starts_at},
-                                {product_id}
-                            )', $d);
+                            if($d['status']=='active'){
+                                $db->direct('replace into revenuecat_subscriptions (
+                                    id,
+                                    customer_id,
+                                    current_period_ends_at,
+                                    current_period_starts_at,
+                                    product_id
+                                ) values (
+                                    {id},
+                                    {customer_id},
+                                    {current_period_ends_at},
+                                    {current_period_starts_at},
+                                    {product_id}
+                                )', $d);
+                            }else{
+                                $db->direct('delete from revenuecat_subscriptions where id = {id}', $d);
+                            }
                         }
                     }
 
@@ -50,6 +54,7 @@ class Middleware implements IMiddleware
                     ]);
                 }
             } catch (\Exception $e) {
+                App::logger('revenuecat')->error($e->getMessage());
                 App::set('maintanceMode', 'on');
                 App::addError($e->getMessage());
             }
