@@ -1,22 +1,25 @@
 {
-    "name": "tualo/revenuecat",
-    "description": "tualo - revenuecat api",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Thomas Hoffmann",
-            "email": "thomas.hoffmann@tualo.de"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "Tualo\\Office\\Revenuecat\\": "src/"
-        },
-        "files": ["src/functions.php"]
-    },
-    "minimum-stability": "dev",
-    "require": {
-        "stripe/stripe-php": "*"
+  "name": "tualo/revenuecat",
+  "description": "tualo - revenuecat api",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Thomas Hoffmann",
+      "email": "thomas.hoffmann@tualo.de"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Tualo\\Office\\Revenuecat\\": "src/"
+    },
+    "files": [
+      "src/functions.php"
+    ]
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "guzzlehttp/guzzle": "^7.9.3"
+  },
+  "version": "1.0.1"
 }
