@@ -54,7 +54,7 @@ class Middleware implements IMiddleware
                     ]);
                 }
             } catch (\Exception $e) {
-                App::logger('revenuecat')->error($e->getMessage());
+                App::logger('revenuecat')->error($e->getMessage(), []);
                 App::set('maintanceMode', 'on');
                 App::addError($e->getMessage());
             }
